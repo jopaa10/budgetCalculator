@@ -1,6 +1,9 @@
 <script>
 	import Navbar from '$lib/components/Navbar.svelte';
-	import Title from '$lib/components/Title.svelte';
+	import ExpenseList from '$lib/components/ExpensesList.svelte';
+	import expensesData from '../expenses';
+
+	let expenses = [...expensesData];
 </script>
 
 <svelte:head>
@@ -9,5 +12,6 @@
 </svelte:head>
 
 <Navbar />
-<Title title={'Add Expense'} />
-<Title title={'Expense'} />
+<main class="content">
+	<ExpenseList {expenses} />
+</main>
