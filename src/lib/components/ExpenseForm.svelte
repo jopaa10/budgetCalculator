@@ -1,15 +1,45 @@
 <script>
 	import Title from './Title.svelte';
+	import { onMount, onDestroy, afterUpdate, beforeUpdate } from 'svelte';
 
-	let name = '';
-	let amount = null;
+	export let name = '';
+	export let amount = null;
+	export let handleSubmit;
+	export let isEditing;
+	export let hideForm;
+
+	onMount(() => {
+		console.log('form has mounted');
+	});
+
+	onDestroy(() => {
+		console.log('form has mounted');
+	});
+
+	afterUpdate(() => {
+		console.count('after mounted');
+	});
+
+	beforeUpdate(() => {
+		console.count('before mounted');
+	});
 
 	$: isEmpty = !name || !amount;
+
+	// function handleSubmit() {
+	// 	if (editExpense) {
+	// 		editExpense({ name, amount });
+	// 	} else {
+	// 		addExpense({ name, amount });
+	// 	}
+	// 	name = '';
+	// 	amount = null;
+	// }
 </script>
 
 <section class="form">
 	<Title title="add expense" />
-	<form class="expense-form">
+	<form class="expense-form" on:submit|preventDefault={handleSubmit}>
 		<div class="form-control">
 			<label for="name"> name </label>
 			<input type="text" id="name" bind:value={name} />
@@ -21,10 +51,11 @@
 		{#if isEmpty}
 			<p class="form-empty">please fill out all form fields</p>
 		{/if}
+
 		<button type="submit" class="btn btn-block" class:disabled={isEmpty} disabled={isEmpty}
-			>add expense</button
+			>{#if isEditing} edit expense {:else} add expense {/if}</button
 		>
-		<button type="button" class="close-btn">
+		<button type="button" class="close-btn" on:click={hideForm}>
 			<i class="fas fa-times" />
 			close
 		</button>
